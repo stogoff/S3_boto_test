@@ -1,7 +1,7 @@
 import sys
 
 import boto3
-import botocore
+import botocore.exceptions
 
 import config
 
@@ -16,11 +16,6 @@ def main():
     session = boto3.session.Session(aws_access_key_id=config.key,
                                     aws_secret_access_key=config.secret)
 
-    sts_client = session.client('sts')
-
-    account_id = sts_client.get_caller_identity()["Account"]
-    print(account_id)
-
     s3 = session.resource('s3')
     try:
         s3.Bucket(config.bucket1).download_file(config.remote_fn, config.local_fn)
@@ -29,15 +24,15 @@ def main():
         print(e)
         sys.exit(1)
 
-    del session
+    sts_client = session.client('sts')
 
     assumed_role_object = sts_client.assume_role(
         RoleArn="arn:aws:iam::{}:role/{}".format(config.account2_id, config.role),
         RoleSessionName="AssumeRoleSession1"
     )
     credentials = assumed_role_object['Credentials']
-    print(credentials)
 
+    # starting session with temporary credentials
     session = boto3.session.Session(aws_access_key_id=credentials['AccessKeyId'],
                                     aws_secret_access_key=credentials['SecretAccessKey'],
                                     aws_session_token=credentials['SessionToken'], )
