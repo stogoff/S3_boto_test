@@ -10,4 +10,4 @@ account2_id = ''
 role = ''
 
 remote_fn = ''
-local_fn = 'image.jpg'
+local_fn = 'tempfile'

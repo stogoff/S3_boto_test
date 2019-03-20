@@ -2,7 +2,7 @@
 We have 2 AWS accounts.
 On the first account, we should go to the AWS Management console, 
 service S3 and create a new bucket.
-Add its name in the field 'bucket1 of file config.py. 
+Add its name in the field 'bucket1' of file config.py. 
 Copy ID of the first account to the field 'account1_id'.
 Go to IAM and create this policy (change <BUCKET> to new bucket's name) 
 and save it as 'policy1':
@@ -55,7 +55,8 @@ in the field 'account2_id', create new S3 bucket,
 add its name in the field 'bucket2',
 create IAM role with type "Another AWS Account" 
 adding account1_id as a parameter and copy its name 
-in the field 'role2'
+in the field 'role', attach to the role policy AmazonS3FullAccess 
+
 
 
 
