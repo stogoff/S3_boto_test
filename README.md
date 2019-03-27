@@ -62,7 +62,7 @@ adding account1_id as a parameter and copy its name
 in the field 'role', attach to the role policy AmazonS3FullAccess 
 
 #### Use script
-```python3 s2_down_up.py```
+```python3 s3_down_up.py```
 
 
 
