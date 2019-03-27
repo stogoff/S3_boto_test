@@ -1,4 +1,4 @@
-## for account1:
+# for account 1:
 key = ''
 secret = ''
 bucket1 = ''
