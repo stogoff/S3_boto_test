@@ -1,7 +1,6 @@
-import sys
-
 import boto3
-import botocore.exceptions
+from boto3.exceptions import S3UploadFailedError
+from botocore.exceptions import ClientError
 
 import config
 
@@ -13,23 +12,24 @@ def main():
     Upload file to S3 of the second account
 
     """
+    # Open a session with 1st aws acc
     session = boto3.session.Session(aws_access_key_id=config.key,
                                     aws_secret_access_key=config.secret)
-
     s3 = session.resource('s3')
+
     try:
         s3.Bucket(config.bucket1).download_file(config.remote_fn, config.local_fn)
         print('file {} was downloaded as {}'.format(config.remote_fn, config.local_fn))
-    except botocore.exceptions.ClientError as e:
+    except ClientError as e:
         print(e)
-        sys.exit(1)
 
     sts_client = session.client('sts')
-
+    # Assume a role for using 2nd acc
     assumed_role_object = sts_client.assume_role(
         RoleArn="arn:aws:iam::{}:role/{}".format(config.account2_id, config.role),
         RoleSessionName="AssumeRoleSession1"
     )
+    # get temporary credentials
     credentials = assumed_role_object['Credentials']
 
     # starting session with temporary credentials
@@ -41,9 +41,9 @@ def main():
     try:
         s3.Bucket(config.bucket2).upload_file(config.local_fn, config.remote_fn)
         print('file {} was uploaded as {} '.format(config.local_fn, config.remote_fn))
-    except botocore.exceptions.ClientError as e:
+    except ClientError as e:
         print(e)
-    except boto3.exceptions.S3UploadFailedError as e:
+    except S3UploadFailedError as e:
         print(e)
 
 

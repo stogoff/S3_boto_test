@@ -1,4 +1,7 @@
 
+## S3 download/upload with 2 AWS accounts using boto3
+
+#### Prepare your AWS
 We have 2 AWS accounts.
 On the first account, we should go to the AWS Management console, 
 service S3 and create a new bucket.
@@ -7,6 +10,7 @@ Copy ID of the first account to the field 'account1_id'.
 Go to IAM and create this policy (change <BUCKET> to new bucket's name) 
 and save it as 'policy1':
 
+```
 policy1:
 {
     "Version": "2012-10-17",
@@ -42,7 +46,7 @@ policy1:
         }
     ]
 }
-
+```
 
 Next, create a user with 'policy1'. 
 Credentials of this user we'll copy to file config.py, 
@@ -57,6 +61,8 @@ create IAM role with type "Another AWS Account"
 adding account1_id as a parameter and copy its name 
 in the field 'role', attach to the role policy AmazonS3FullAccess 
 
+#### Use script
+```python3 s2_down_up.py```
 
 
 

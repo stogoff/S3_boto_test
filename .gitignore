@@ -1,0 +1,9 @@
+.idea/*
+.git/*
+__pycache__/*
+boto_venv/*
+
+*.jpg
+*.iml
+
+config.py
