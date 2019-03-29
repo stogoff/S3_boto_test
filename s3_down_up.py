@@ -27,7 +27,7 @@ def main():
         print('{} was downloaded as {}, time:{:.1f}ms'.format(
             config.remote_fn, config.local_fn, t * 1000))
     except ClientError as e:
-        print(e)
+        print("Error:", e)
 
     sts_client = session1.client('sts')
     # Assume a role for using 2nd acc
@@ -53,9 +53,11 @@ def main():
         print('{} was uploaded as {}, time:{:.1f}ms'.format(
             config.local_fn, config.remote_fn, t * 1000))
     except ClientError as e:
-        print(e)
+        print("Error:", e)
     except S3UploadFailedError as e:
-        print(e)
+        print("Error:", e)
+    except FileNotFoundError as e:
+        print("Error:", e)
 
 
 if __name__ == '__main__':
